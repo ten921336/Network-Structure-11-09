@@ -2,130 +2,22 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>NetworkStructure.html</title>
-    <style>
-      body { margin: 0; }
-      canvas { display: block; }
-    </style>
+    <title>ネットワーク構造</title>
+    <!-- three.jsを読み込む -->
+    <!--script src="https://threejs.org/build/three.js"></script-->
   </head>
-  <body>
-    <canvas id="myCanvas"></canvas>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.152.2/examples/jsm/"
-        }
-      }
-    </script>
-    <script type="module">
-      import * as THREE from "three";
-      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-      // ページが読み込まれた後に実行される関数
-      window.onload = function() {
-        // サイズを指定
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
-        // シーンを作成
-        const scene = new THREE.Scene();
-
-        // レンダラーを作成
-        const canvasElement = document.querySelector("#myCanvas");
-        const renderer = new THREE.WebGLRenderer({
-          canvas: canvasElement,
-        });
-        renderer.setSize(width, height);
-
-        // カメラを作成
-        const camera = new THREE.PerspectiveCamera(45, width / height);
-        camera.position.set(40, 10, 100);
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-        // カメラコントローラーを作成
-        const controls = new OrbitControls(camera, canvasElement);
-
-        // 直線のジオメトリとマテリアルを作成(x)
-        const lineGeometryX = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(-50, 0, 0), // 始点
-          new THREE.Vector3(50, 0, 0),  // 終点
-        ]);
-
-        // 直線のジオメトリとマテリアルを作成(y)
-        const lineGeometryY = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(0, -50, 0), // 始点
-          new THREE.Vector3(0, 50, 0),  // 終点
-        ]);
-
-        // 直線のジオメトリとマテリアルを作成(Z)
-        const lineGeometryZ = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(0, 0, -50), // 始点
-          new THREE.Vector3(0, 0, 50),  // 終点
-        ]);
-
-        //色は赤
-        const red = new THREE.LineBasicMaterial({ color: 0xff0000 });
-
-        // 直線オブジェクトを作成
-        const lineX = new THREE.Line(lineGeometryX , red);
-        const lineY = new THREE.Line(lineGeometryY , red);
-        const lineZ = new THREE.Line(lineGeometryZ , red);
-        // 直線オブジェクトをシーンに追加
-        scene.add(lineX);
-        scene.add(lineY);
-        scene.add(lineZ);
-
-        //背景色の変更
-        // scene.background = new THREE.Color(255,255,255);
-
-        // ノードとエッジを表示
-        const numNodes = 100; // ノードの数
-        const nodes = [];
-        for (let i = 1; i <= numNodes; i++) {
-             nodes.push({
-                id: i,
-                label: `Node ${i}`,
-                x: Math.random() * 100 - 50,
-                y: Math.random() * 100 - 50,
-                z: Math.random() * 100 - 50
-             });
-        }
-        
-        const edges = [];
-        for (let i = 0; i < numNodes - 1; i++) {
-            edges.push({
-                source: i,
-                target: i + 1
-            });
-        }
-        
-        nodes.forEach(node => {
-          const geometry = new THREE.SphereGeometry(0.2, 32, 32);
-          const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-          const sphere = new THREE.Mesh(geometry, material);
-          sphere.position.set(node.x, node.y, node.z);
-          scene.add(sphere);
-        });
-
-        edges.forEach(edge => {
-          const sourceNode = nodes[edge.source];
-          const targetNode = nodes[edge.target];
-          const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(sourceNode.x, sourceNode.y, sourceNode.z), new THREE.Vector3(targetNode.x, targetNode.y, targetNode.z)]);
-          const lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-          const line = new THREE.Line(geometry, lineMaterial);
-          scene.add(line);
-        });
-
-        tick();
-
-        // 毎フレーム時に実行されるループイベントです
-        function tick() {
-        // レンダリング
-        renderer.render(scene, camera);
-        requestAnimationFrame(tick);
+<body>
+  <canvas id="myCanvas"></canvas>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/",
+        "webxr-polyfill": "https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.module.js"
       }
     }
-    </script>
-  </body>
+  </script>
+  <!-- jsを読み込む -->
+  <script type="module" src="Network.js"></script>
+</body>
 </html>
