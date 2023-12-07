@@ -384,9 +384,9 @@ function init() {
       if (Math.abs(stickX) > stickThreshold && Math.abs(stickY) > stickThreshold) {
         // スティックが入力された際の処理
         console.log('スティックが入力されました');
-        cameraContainer.position.z += 1;
-        controller1.position.z += 1;
-        controller2.position.z += 1;
+        cameraContainer.position.z += 100;
+        controller1.position.z += 100;
+        controller2.position.z += 100;
       }
     }
   }
