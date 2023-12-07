@@ -381,7 +381,7 @@ function init() {
       const stickY = controller.axes[1];
 
       // スティックが一定の閾値以上であれば処理を実行
-      if (Math.abs(stickX) > stickThreshold || Math.abs(stickY) > stickThreshold) {
+      if (Math.abs(stickX) > stickThreshold && Math.abs(stickY) > stickThreshold) {
         // スティックが入力された際の処理
         console.log('スティックが入力されました');
         cameraContainer.position.z += 1;
