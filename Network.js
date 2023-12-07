@@ -373,7 +373,7 @@ function init() {
     const userData = controller1.userData;
     const stickThreshold = 0.2;
 
-    //if (controller.axes && controller.axes.length >= 2) {
+    if (controller.axes && controller.axes.length >= 2) {
     const stickX = controller1.axes[0];
     const stickY = controller1.axes[1];
 
@@ -385,7 +385,7 @@ function init() {
       controller1.position.z += 5;
       controller2.position.z += 5;
     }
-    //}
+    }
   }
   /* ----コントローラー設定----- */
 
