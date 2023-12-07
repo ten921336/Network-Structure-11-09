@@ -332,9 +332,7 @@ function init() {
     scene.add(line);
   });
 
-
   /* ----コントローラー設定----- */
-
   // コントローラーイベントの設定
   function onSelectStart() {
     this.userData.isSelecting = true;
@@ -370,25 +368,24 @@ function init() {
   controller1.add(line.clone());
   controller2.add(line.clone());
 
-
   //機能
-  function handleController(controller) {
-    const userData = controller.userData;
-    const stickThreshold = 0.5;
+  function handleController(controller1) {
+    const userData = controller1.userData;
+    const stickThreshold = 0.2;
 
-    if (controller.axes && controller.axes.length >= 2) {
-      const stickX = controller.axes[0];
-      const stickY = controller.axes[1];
+    //if (controller.axes && controller.axes.length >= 2) {
+    const stickX = controller1.axes[0];
+    const stickY = controller1.axes[1];
 
-      // スティックが一定の閾値以上であれば処理を実行
-      if (Math.abs(stickX) > stickThreshold && Math.abs(stickY) > stickThreshold) {
-        // スティックが入力された際の処理
-        console.log('スティックが入力されました');
-        cameraContainer.position.z += 100;
-        controller1.position.z += 100;
-        controller2.position.z += 100;
-      }
+    // スティックが一定の閾値以上であれば処理を実行
+    if (Math.abs(stickX) > stickThreshold && Math.abs(stickY) > stickThreshold) {
+      // スティックが入力された際の処理
+      console.log('スティックが入力されました');
+      cameraContainer.position.z += 5;
+      controller1.position.z += 5;
+      controller2.position.z += 5;
     }
+    //}
   }
   /* ----コントローラー設定----- */
 
