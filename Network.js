@@ -114,13 +114,6 @@ function init() {
     });
   }
 
-  // const edges = [];
-  // for (let i = 0; i < numNodes - 1; i++) {
-  //     edges.push({
-  //         source: i,
-  //         target: i + 1
-  //     });
-  // }
   const edges = [
     { source: 0, target: 1, weight: 1.57336928633009 },
     { source: 2, target: 3, weight: 1.76481542620161 },
@@ -337,56 +330,56 @@ function init() {
   function onSelectStart() {
     this.userData.isSelecting = true;
   }
+
   function onSelectEnd() {
     this.userData.isSelecting = false;
   }
 
-  //コントローラー取得
+  // スティックの閾値
+  const stickThreshold = 0.2;
+
+  function handleController(controller) {
+    const userData = controller.userData;
+
+    // コントローラーボタンが押された際の処理
+    if (userData.isSelecting === true) {
+      console.log('ボタン入力中');
+    }
+
+    // スティックの入力がある場合
+    if (controller.axes && controller.axes.length >= 2) {
+      const stickX = controller.axes[0];
+      const stickY = controller.axes[1];
+
+      // スティックが一定の閾値以上であればプレイヤーを動かす
+      if (Math.abs(stickX) > stickThreshold || Math.abs(stickY) > stickThreshold) {
+        // スティックが入力された際の処理
+        console.log('スティックが入力されました');
+
+        // プレイヤーをスティックの入力に基づいて移動させる
+        const speed = 0.1; // 移動速度
+        cameraContainer.position.x += stickX * speed;
+        cameraContainer.position.z -= stickY * speed;
+      }
+    }
+  }
+
+  // ...
+
+  // コントローラー取得
   controller1 = renderer.xr.getController(0);
   controller1.addEventListener('selectstart', onSelectStart);
   controller1.addEventListener('selectend', onSelectEnd);
+  controller1.addEventListener('axeschanged', () => handleController(controller1)); // スティックの入力が変更された際に呼び出す
+
   scene.add(controller1);
+
   controller2 = renderer.xr.getController(1);
   controller2.addEventListener('selectstart', onSelectStart);
   controller2.addEventListener('selectend', onSelectEnd);
+  controller2.addEventListener('axeschanged', () => handleController(controller2)); // スティックの入力が変更された際に呼び出す
+
   scene.add(controller2);
-
-  //コントローラーモデルを取得
-  const controllerModelFactory = new XRControllerModelFactory();
-  controllerGrip1 = renderer.xr.getControllerGrip(0);
-  controllerGrip1.add(controllerModelFactory.createControllerModel(controllerGrip1));
-  scene.add(controllerGrip1);
-  controllerGrip2 = renderer.xr.getControllerGrip(1);
-  controllerGrip2.add(controllerModelFactory.createControllerModel(controllerGrip2));
-  scene.add(controllerGrip2);
-  //コントローラーから出る光線の作成				
-  const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, - 1)]);
-  const mat = new THREE.LineBasicMaterial({ color: 0x8a2be2 });
-  const line = new THREE.Line(geo, mat);
-  line.name = 'line';
-  line.scale.z = 1;//光線の長さ
-  controller1.add(line.clone());
-  controller2.add(line.clone());
-
-  //機能
-  function handleController(controller1) {
-    const userData = controller1.userData;
-    const stickThreshold = 0.2;
-
-    if (controller.axes && controller.axes.length >= 2) {
-    const stickX = controller1.axes[0];
-    const stickY = controller1.axes[1];
-
-    // スティックが一定の閾値以上であれば処理を実行
-    if (Math.abs(stickX) > stickThreshold && Math.abs(stickY) > stickThreshold) {
-      // スティックが入力された際の処理
-      console.log('スティックが入力されました');
-      cameraContainer.position.z += 5;
-      controller1.position.z += 5;
-      controller2.position.z += 5;
-    }
-    }
-  }
   /* ----コントローラー設定----- */
 
   // レンダラーにループ関数を登録
